@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Northstar Studio</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --bg-soft: #121a2d;
+        --card: rgba(18, 26, 45, 0.85);
+        --card-strong: #1a2744;
+        --primary: #6ee7b7;
+        --primary-strong: #34d399;
+        --secondary: #8b5cf6;
+        --text: #edf2ff;
+        --muted: #a9b8d3;
+        --border: rgba(255, 255, 255, 0.08);
+        --shadow: 0 22px 50px rgba(0, 0, 0, 0.26);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(110, 231, 183, 0.18), transparent 28%),
+          radial-gradient(circle at top right, rgba(139, 92, 246, 0.2), transparent 30%),
+          var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .container {
+        width: min(1120px, calc(100% - 2rem));
+        margin: 0 auto;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        backdrop-filter: blur(16px);
+        background: rgba(11, 16, 32, 0.72);
+        border-bottom: 1px solid var(--border);
+        z-index: 10;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 76px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+      }
+
+      .brand-mark {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        box-shadow: 0 0 18px rgba(110, 231, 183, 0.8);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+      }
+
+      .nav-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 0.9rem 1.4rem;
+        font-weight: 700;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+        color: #05110d;
+        box-shadow: 0 10px 20px rgba(52, 211, 153, 0.3);
+      }
+
+      .btn-secondary {
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--text);
+      }
+
+      .hero {
+        padding: 5.5rem 0 3rem;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        padding: 0.52rem 0.8rem;
+        border-radius: 999px;
+        background: rgba(110, 231, 183, 0.08);
+        border: 1px solid rgba(110, 231, 183, 0.18);
+        color: var(--primary);
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        font-size: clamp(2.8rem, 5vw, 5rem);
+        line-height: 1.05;
+        letter-spacing: -0.06em;
+        margin: 1rem 0 1rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+        color: var(--muted);
+        max-width: 620px;
+      }
+
+      .cta-row {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+      }
+
+      .mini-stats {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-top: 2.2rem;
+      }
+
+      .mini-stats strong {
+        display: block;
+        font-size: 1.75rem;
+        letter-spacing: -0.05em;
+      }
+
+      .mini-stats span {
+        color: var(--muted);
+      }
+
+      .dashboard {
+        position: relative;
+        padding: 1.2rem;
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        background: linear-gradient(180deg, rgba(22, 31, 52, 0.95), rgba(17, 23, 39, 0.98));
+        box-shadow: var(--shadow);
+      }
+
+      .dashboard::before {
+        content: "";
+        position: absolute;
+        inset: auto 16% -20% 14%;
+        height: 40%;
+        background: radial-gradient(circle, rgba(110, 231, 183, 0.3), transparent 60%);
+        filter: blur(12px);
+      }
+
+      .window-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0 1rem;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #f59e0b;
+      }
+
+      .dot:nth-child(2) {
+        background: #34d399;
+      }
+
+      .dot:nth-child(3) {
+        background: #f87171;
+      }
+
+      .panel {
+        position: relative;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 1.2rem;
+      }
+
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+      }
+
+      .pill {
+        padding: 0.35rem 0.7rem;
+        border-radius: 999px;
+        background: rgba(110, 231, 183, 0.12);
+        color: var(--primary);
+        font-size: 0.74rem;
+        font-weight: 700;
+      }
+
+      .chart {
+        display: flex;
+        align-items: end;
+        gap: 0.8rem;
+        height: 130px;
+        padding-top: 0.5rem;
+      }
+
+      .bar {
+        flex: 1;
+        border-radius: 12px 12px 0 0;
+        background: linear-gradient(180deg, #8b5cf6, #6ee7b7);
+      }
+
+      .bar:nth-child(1) { height: 34%; }
+      .bar:nth-child(2) { height: 48%; }
+      .bar:nth-child(3) { height: 58%; }
+      .bar:nth-child(4) { height: 70%; }
+      .bar:nth-child(5) { height: 82%; }
+      .bar:nth-child(6) { height: 100%; }
+
+      .stack {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .metric {
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: -0.06em;
+      }
+
+      .metric-label {
+        display: block;
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+
+      .ring {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+        border-radius: 50%;
+        background: conic-gradient(var(--primary) 0 72%, rgba(255, 255, 255, 0.08) 72%);
+        display: grid;
+        place-items: center;
+      }
+
+      .ring-inner {
+        width: 68px;
+        height: 68px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: #141d31;
+        font-weight: 700;
+      }
+
+      .section {
+        padding: 4rem 0;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .section h2 {
+        margin: 0;
+        font-size: clamp(2rem, 3vw, 3rem);
+        letter-spacing: -0.05em;
+      }
+
+      .section-header p {
+        color: var(--muted);
+        max-width: 42rem;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.2rem;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+      }
+
+      .icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, rgba(110, 231, 183, 0.18), rgba(139, 92, 246, 0.18));
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+      }
+
+      .card h3 {
+        margin: 0 0 0.6rem;
+        font-size: 1.35rem;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .feature-band {
+        background: linear-gradient(180deg, rgba(18, 26, 45, 0.8), rgba(12, 17, 28, 0.8));
+        border: 1px solid var(--border);
+        border-radius: 30px;
+        padding: 2rem;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      ul.checks {
+        list-style: none;
+        padding: 0;
+        margin: 2rem 0 0;
+        display: grid;
+        gap: 1rem;
+      }
+
+      ul.checks li {
+        display: flex;
+        gap: 0.8rem;
+        align-items: flex-start;
+        color: var(--muted);
+      }
+
+      .check {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: rgba(110, 231, 183, 0.12);
+        color: var(--primary);
+        font-size: 0.85rem;
+        font-weight: 700;
+        flex-shrink: 0;
+        margin-top: 0.1rem;
+      }
+
+      .stats-box {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+      }
+
+      .stat-item {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 1.3rem;
+      }
+
+      .stat-item strong {
+        display: block;
+        font-size: 2rem;
+        letter-spacing: -0.05em;
+        margin-bottom: 0.2rem;
+      }
+
+      .stat-item span {
+        color: var(--muted);
+      }
+
+      .cta-box {
+        background: linear-gradient(135deg, rgba(110, 231, 183, 0.12), rgba(139, 92, 246, 0.16));
+        border: 1px solid var(--border);
+        border-radius: 30px;
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+      }
+
+      .cta-box h3 {
+        margin: 0 0 0.5rem;
+        font-size: clamp(1.8rem, 2vw, 2.6rem);
+        letter-spacing: -0.05em;
+      }
+
+      .cta-box p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      footer {
+        padding: 2rem 0 3.8rem;
+        color: var(--muted);
+      }
+
+      .footer-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        border-top: 1px solid var(--border);
+        padding-top: 1.5rem;
+      }
+
+      @media (max-width: 900px) {
+        .hero-grid,
+        .feature-grid,
+        .cards {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .section-header,
+        .cta-box,
+        .footer-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .nav {
+          min-height: 68px;
+        }
+
+        .nav-actions {
+          gap: 0.6rem;
+        }
+
+        .btn {
+          padding: 0.8rem 1rem;
+        }
+
+        .mini-stats,
+        .stats-box {
+          grid-template-columns: 1fr;
+          display: grid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav">
+        <a href="#" class="brand" aria-label="Northstar Studio home">
+          <span class="brand-mark"></span>
+          <span>Northstar</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#services">Services</a>
+          <a href="#results">Results</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="nav-actions">
+          <a href="#contact" class="btn btn-secondary">Talk to us</a>
+          <a href="#" class="btn btn-primary">Get started</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <span class="eyebrow">Design that performs</span>
+            <h1>Build a sharper digital presence.</h1>
+            <p>
+              We help growing brands turn ideas into elegant experiences — from strategy and UI design to launch-ready web builds that customers remember.
+            </p>
+
+            <div class="cta-row">
+              <a href="#contact" class="btn btn-primary">Book a strategy call</a>
+              <a href="#services" class="btn btn-secondary">See our work</a>
+            </div>
+
+            <div class="mini-stats">
+              <div>
+                <strong>120+</strong>
+                <span>projects shipped</span>
+              </div>
+              <div>
+                <strong>4.9/5</strong>
+                <span>average rating</span>
+              </div>
+              <div>
+                <strong>32%</strong>
+                <span>faster launches</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard" aria-label="Business dashboard preview">
+            <div class="window-bar">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <span>Growth overview</span>
+                <span class="pill">+18.4%</span>
+              </div>
+
+              <div class="chart" aria-label="Bar chart">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+              </div>
+            </div>
+
+            <div class="stack">
+              <div class="panel">
+                <div class="metric">84k</div>
+                <span class="metric-label">Monthly visitors</span>
+              </div>
+
+              <div class="panel">
+                <div class="ring"><span class="ring-inner">72%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="services" class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Everything your next launch needs.</h2>
+            <p>We combine strategic clarity with high-converting design so your team can move from idea to impact without friction.</p>
+          </div>
+
+          <div class="cards">
+            <article class="card">
+              <div class="icon">✦</div>
+              <h3>Brand Strategy</h3>
+              <p>Clear positioning, messaging, and storytelling frameworks built to stand out in crowded markets.</p>
+            </article>
+
+            <article class="card">
+              <div class="icon">▣</div>
+              <h3>UX/UI Design</h3>
+              <p>Thoughtful interfaces designed for clarity, trust, and seamless user journeys from first click to conversion.</p>
+            </article>
+
+            <article class="card">
+              <div class="icon">⚡</div>
+              <h3>Launch Systems</h3>
+              <p>Fast, polished execution with responsive builds, testing, and ready-to-scale digital experiences.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="results" class="section">
+        <div class="container">
+          <div class="feature-band">
+            <div class="feature-grid">
+              <div>
+                <span class="eyebrow">Why teams choose us</span>
+                <h2>Simple collaboration. Measurable results.</h2>
+                <ul class="checks">
+                  <li><span class="check">✓</span><span>Clear roadmaps and expectations from day one, keeping projects focused and efficient.</span></li>
+                  <li><span class="check">✓</span><span>Design decisions grounded in user behavior, conversion goals, and business priorities.</span></li>
+                  <li><span class="check">✓</span><span>Reliable delivery with responsive communication and launch support that reduces risk.</span></li>
+                </ul>
+              </div>
+
+              <div class="stats-box">
+                <div class="stat-item">
+                  <strong>3x</strong>
+                  <span>more qualified leads</span>
+                </div>
+                <div class="stat-item">
+                  <strong>2.4x</strong>
+                  <span>faster decision cycles</span>
+                </div>
+                <div class="stat-item">
+                  <strong>96%</strong>
+                  <span>client retention</span>
+                </div>
+                <div class="stat-item">
+                  <strong>10+</strong>
+                  <span>industry verticals</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="container">
+          <div class="cta-box">
+            <div>
+              <h3>Ready to turn attention into action?</h3>
+              <p>We build digital experiences that feel premium and perform with purpose.</p>
+            </div>
+            <a href="#contact" class="btn btn-primary">Start your project</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contact">
+      <div class="container footer-row">
+        <div>© 2026 Northstar Studio</div>
+        <div>hello@northstarstudio.co</div>
+      </div>
+    </footer>
+  </body>
+</html>
